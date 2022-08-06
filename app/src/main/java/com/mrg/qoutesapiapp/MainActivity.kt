@@ -1,11 +1,93 @@
 package com.mrg.qoutesapiapp
 
+import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.mrg.qoutesapiapp.Network.QuotesApi
+import com.mrg.qoutesapiapp.Network.RetrofitHelper
+import com.mrg.qoutesapiapp.databinding.ActivityMainBinding
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var mResult: ArrayList<Result>
+    private lateinit var adapter: RecyclerViewAdapter
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var viewModel: QuoteViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setRecyclerView()
+
+        viewModel =  ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory
+            .getInstance(application))
+            .get(QuoteViewModel::class.java)
+        viewModel.getQuote(applicationContext)
+        viewModel.mutableLiveData.observe(this , Observer {
+
+            adapter = RecyclerViewAdapter(applicationContext, it)
+            recyclerView.adapter = adapter
+
+        })
+
+//        GlobalScope.launch {
+//            val result = quotesApi.getQuotes()
+//            result.enqueue(object : Callback<List<QuoteList>> {
+//                override fun onResponse(
+//                    call: Call<List<QuoteList>>,
+//                    response: Response<List<QuoteList>>
+//                ) {
+//                    Log.d("ayush: ", response.body()!!.size.toString())
+//
+////                    // Checking the result
+//                    for (item in response.body()!!) {
+////                        for (i: Int in 0..response.body()!!.size) {
+//                            var obj = item.results
+//                            mResult.add(obj.get(0))
+//                        Log.d(TAG, "onResponse: i'm here")
+//                            Log.d("ayush: ", mResult.get(0).content)
+//
+////                        }
+//                    }
+//
+//
+//                }
+//
+//                override fun onFailure(call: Call<List<QuoteList>>, t: Throwable) {
+//                    Toast.makeText(this@MainActivity, "error", Toast.LENGTH_LONG)
+//                }
+//
+//            })
+
+        }
+
+
+        fun setRecyclerView() {
+
+            var recyclerView: RecyclerView = binding.recyclerview
+            // setting grid layout manager to implement grid view.
+            // in this method '2' represents number of columns to be displayed in grid view.
+            val layoutManager =
+                GridLayoutManager(applicationContext, 2, RecyclerView.VERTICAL, false)
+
+            // at last set adapter to recycler view.
+            recyclerView.layoutManager = layoutManager
+            // This will pass the ArrayList to our Adapter
+
+            // Setting the Adapter with the recyclerview
+        }
+
 }
