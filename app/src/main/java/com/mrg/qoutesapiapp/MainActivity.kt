@@ -72,12 +72,12 @@ class MainActivity : AppCompatActivity() {
             // setting grid layout manager to implement grid view.
             // in this method '2' represents number of columns to be displayed in grid view.
             val layoutManager =
-                GridLayoutManager(applicationContext, 2, RecyclerView.VERTICAL, false)
+                GridLayoutManager(applicationContext, 2)
 
             // at last set adapter to recycler view.
             recyclerView.layoutManager = layoutManager
+            recyclerView.setHasFixedSize(false)
             // This will pass the ArrayList to our Adapter
-
             // Setting the Adapter with the recyclerview
         }
 
