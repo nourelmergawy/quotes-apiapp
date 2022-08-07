@@ -5,7 +5,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface QuotesApi {
-    @GET("/quotes")
-    suspend fun getQuotes() : Call<List<QuoteList>>
+    @GET("quotes")
+    fun getQuotes() : Call<QuoteList>
 
 }

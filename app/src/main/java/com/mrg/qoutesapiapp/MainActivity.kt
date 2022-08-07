@@ -1,24 +1,12 @@
 package com.mrg.qoutesapiapp
 
-import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.widget.Toast
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.mrg.qoutesapiapp.Network.QuotesApi
-import com.mrg.qoutesapiapp.Network.RetrofitHelper
 import com.mrg.qoutesapiapp.databinding.ActivityMainBinding
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -31,14 +19,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setRecyclerView()
-
+        mResult = ArrayList()
         viewModel =  ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory
             .getInstance(application))
             .get(QuoteViewModel::class.java)
         viewModel.getQuote(applicationContext)
         viewModel.mutableLiveData.observe(this , Observer {
+            for(i : Int in 0..it.results.size-1){
+                mResult.add(it.results.get(i))
+            }
 
-            adapter = RecyclerViewAdapter(applicationContext, it)
+            adapter = RecyclerViewAdapter(applicationContext, mResult)
             recyclerView.adapter = adapter
 
         })
@@ -77,7 +68,7 @@ class MainActivity : AppCompatActivity() {
 
         fun setRecyclerView() {
 
-            var recyclerView: RecyclerView = binding.recyclerview
+             recyclerView = binding.recyclerview
             // setting grid layout manager to implement grid view.
             // in this method '2' represents number of columns to be displayed in grid view.
             val layoutManager =

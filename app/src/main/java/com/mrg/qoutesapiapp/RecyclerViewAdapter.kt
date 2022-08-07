@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mrg.qoutesapiapp.RecyclerViewAdapter.*
 import com.mrg.qoutesapiapp.databinding.QuoteItemBinding
 
-class RecyclerViewAdapter (private val context: Context, private val mResult: List<QuoteList>)
+class RecyclerViewAdapter(private val context: Context, private val mResult: ArrayList<Result>)
     : RecyclerView.Adapter<RecyclerViewHolder>() {
     lateinit var binding: QuoteItemBinding
 
@@ -35,8 +35,8 @@ class RecyclerViewAdapter (private val context: Context, private val mResult: Li
     }
 
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
-        holder.quotetv.setText(mResult.get(position).results.get(0).content)
-        holder.authortv.setText(mResult.get(position).results.get(0).author)
+        holder.quotetv.setText(mResult.get(position).content)
+        holder.authortv.setText(mResult.get(position).author)
         holder.cardView.setOnClickListener(View.OnClickListener {
             val clip: ClipData = ClipData.newPlainText("text",holder.quotetv.text)
 

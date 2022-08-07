@@ -2,9 +2,9 @@ package com.mrg.qoutesapiapp
 
 data class QuoteList(
     val count: Int,
-    val lastItemIndex: Int,
-    val page: Int,
-    val results: List<Result>,
     val totalCount: Int,
-    val totalPages: Int
+    val page: Int,
+    val totalPages: Int,
+    val lastItemIndex: Int,
+    val results: List<Result>,
 )

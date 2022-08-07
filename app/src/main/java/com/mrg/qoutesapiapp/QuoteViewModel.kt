@@ -14,7 +14,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class QuoteViewModel(application: Application) : AndroidViewModel(application) {
-    var mutableLiveData : MutableLiveData<List<QuoteList> >
+    var mutableLiveData : MutableLiveData<QuoteList>
     private var repository :Repository
     init {
         repository = Repository()
@@ -23,18 +23,19 @@ class QuoteViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getQuote(context: Context) {
         viewModelScope.launch(Dispatchers.IO){
-          var  call : Call<List<QuoteList>> = repository.getQuote(context)!!
-            call.enqueue(object : Callback<List<QuoteList>> {
+          var  call : Call<QuoteList> = repository.getQuote(context)
+            call.enqueue(object : Callback<QuoteList> {
                 override fun onResponse(
-                    call: Call<List<QuoteList>>,
-                    response: Response<List<QuoteList>>
+                    call: Call<QuoteList>,
+                    response: Response<QuoteList>
                 ) {
                     if (response.isSuccessful) {
                             mutableLiveData.postValue(response.body())
+                        Log.d(TAG, "onResponse: ${response.body()}")
                     }
                 }
 
-                override fun onFailure(call: Call<List<QuoteList>>, t: Throwable) {
+                override fun onFailure(call: Call<QuoteList>, t: Throwable) {
                     Log.d(TAG, "onFailure: ${t}")
                 }
         })

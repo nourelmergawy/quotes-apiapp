@@ -20,7 +20,7 @@ class Repository {
            return INSTANCE!!
        }
    }
-    suspend fun getQuote(context: Context): Call<List<QuoteList>> {
+    suspend fun getQuote(context: Context): Call<QuoteList> {
       val call = RetrofitHelper.getInstance(context)?.getApi().getQuotes()!!
       return call!!
     }
